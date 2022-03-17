@@ -1,14 +1,29 @@
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
 import { colors } from "./src/constent";
 import Keyboard from "./src/components/Keyboard";
 
 const LIMITEDTRYS = 6;
+const copyArray = (arr) => {
+  return [...arr.map((rows) => [...rows])];
+};
 
 export default function App() {
   const word = "joel";
   const letters = word.split("");
-  const rows = new Array(LIMITEDTRYS).fill(new Array(letters.length).fill(""));
+
+  const [rows, setRows] = useState(
+    new Array(LIMITEDTRYS).fill(new Array(letters.length).fill(""))
+  );
+  const [curRow, setCurRow] = useState(0);
+  const [curCol, setCurCol] = useState(0);
+
+  const onKeyPressed = (key) => {
+    const reNewedRows = copyArray(rows);
+    reNewedRows[curRow][curCol] = key;
+    setCurRow(reNewedRows);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -24,7 +39,7 @@ export default function App() {
           </View>
         ))}
       </ScrollView>
-      <Keyboard />
+      <Keyboard onKeyPressed={onKeyPressed} />
     </SafeAreaView>
   );
 }
