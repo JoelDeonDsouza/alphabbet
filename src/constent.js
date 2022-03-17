@@ -4,6 +4,7 @@ export const colors = {
   lightGrey: "#E1E8EB",
   primary: "#65C18C",
   secondary: "#FFE61B",
+  grey: "#EEEEEE",
 };
 
 export const colorsToEmoji = {
