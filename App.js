@@ -22,7 +22,7 @@ export default function App() {
   const onKeyPressed = (key) => {
     const reNewedRows = copyArray(rows);
     reNewedRows[curRow][curCol] = key;
-    setCurRow(reNewedRows);
+    setRows(reNewedRows);
   };
   return (
     <SafeAreaView style={styles.container}>
