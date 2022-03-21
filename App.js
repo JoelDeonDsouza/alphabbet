@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { colors, CLEAR, ENTER } from "./src/constent";
 import Keyboard from "./src/components/Keyboard";
 
@@ -18,8 +25,36 @@ export default function App() {
   );
   const [curRow, setCurRow] = useState(0);
   const [curCol, setCurCol] = useState(0);
+  const [letGameState, setLetGameState] = useState("playing");
+
+  useEffect(() => {
+    if (curRow > 0) {
+      gameState();
+    }
+  }, [curRow]);
+
+  const gameState = () => {
+    if (ifWon()) {
+      Alert.alert("You won!");
+      setLetGameState("won");
+    } else if (ifLost()) {
+      Alert.alert("You Lost!");
+      setLetGameState("lost");
+    }
+  };
+
+  const ifWon = () => {
+    const row = rows[curRow - 1];
+    return row.every((letter, r) => letter === letters[r]);
+  };
+  const ifLost = () => {
+    return curRow === rows.length;
+  };
 
   const onKeyPressed = (key) => {
+    if (letGameState !== "playing") {
+      return;
+    }
     //Clear cell
     const reNewedRows = copyArray(rows);
     if (key === CLEAR) {
