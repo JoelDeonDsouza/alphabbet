@@ -51,7 +51,8 @@ export default function App() {
   const isCellActive = (row, col) => {
     return row === curRow && col === curCol;
   };
-  const getCellColor = (letter, row, col) => {
+  const getCellColor = (row, col) => {
+    const letter = rows[row][col];
     if (row >= curRow) {
       return colors.black;
     } else if (letter === letters[col]) {
@@ -62,6 +63,17 @@ export default function App() {
       return colors.darkGrey;
     }
   };
+
+  const getAllLettersColor = (color) => {
+    return rows.flatMap((row, r) =>
+      row.filter((cell, j) => getCellColor(r, j) === color)
+    );
+  };
+
+  const greenKeys = getAllLettersColor(colors.primary);
+  const yellowKeys = getAllLettersColor(colors.secondary);
+  const greyKeys = getAllLettersColor(colors.darkGrey);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -78,7 +90,7 @@ export default function App() {
                     borderColor: isCellActive(r, j)
                       ? colors.darkGrey
                       : colors.lightGrey,
-                    backgroundColor: getCellColor(letter, r, j),
+                    backgroundColor: getCellColor(r, j),
                   },
                 ]}
               >
@@ -88,7 +100,12 @@ export default function App() {
           </View>
         ))}
       </ScrollView>
-      <Keyboard onKeyPressed={onKeyPressed} />
+      <Keyboard
+        onKeyPressed={onKeyPressed}
+        greenCaps={greenKeys}
+        yellowCaps={yellowKeys}
+        greyCaps={greyKeys}
+      />
     </SafeAreaView>
   );
 }
@@ -109,7 +126,7 @@ const styles = StyleSheet.create({
   map: {
     padding: 20,
     alignSelf: "stretch",
-    height: 100,
+    // height: 100,
   },
   row: {
     alignSelf: "stretch",
