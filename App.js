@@ -35,13 +35,20 @@ export default function App() {
 
   const gameState = () => {
     if (ifWon()) {
-      Alert.alert("You won!");
+      Alert.alert("You won!"); //[{ text: "Share", onPress: shareGame }]
       setLetGameState("won");
     } else if (ifLost()) {
       Alert.alert("You Lost!");
       setLetGameState("lost");
     }
   };
+
+  // const shareGame = () => {
+  //   const textShare = rows.map((row, r) =>
+  //     row.map((cell, j) => getCellColor(r, j))
+  //   );
+  //   console.log(textShare);
+  // };
 
   const ifWon = () => {
     const row = rows[curRow - 1];
